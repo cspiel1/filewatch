@@ -57,6 +57,16 @@ int main(int argc, char *argv[])
 		  LOG_INF("sleeping...");
 		  sleep(5);
 		  LOG_INF("next poll");
+	  } else {
+		  struct inotify_event ie;
+		  /* Be careful. The read will block if the poll had a timeout. */
+		  ssize_t s = read(fd, &ie, sizeof(ie));
+		  LOG_INF("now a read returns %lu", s);
+		  if (s == sizeof(ie)) {
+			  LOG_INF("inotify mask = %u", ie.mask);
+		  } else {
+			  LOG_WRN("Read only too less bytes for an inotify_event.");
+		  }
 	  }
 	  fflush(stderr);
   }
