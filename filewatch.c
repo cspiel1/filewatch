@@ -41,6 +41,7 @@ int main(int argc, char *argv[])
   wd = inotify_add_watch(fd, filename, IN_CLOSE_WRITE);
   struct pollfd pfd = {fd, POLLIN, 0 };
   while (!r) {
+	  /* Note: A timeout of 0 is also possible. */
 	  r = poll(&pfd, 1, INOTIFY_TIMEOUT);
 
 	  if (r<0) {
